@@ -1,14 +1,45 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'dart:math';
 
 class profile extends StatefulWidget {
   State<profile> createState() => _profileState();
 }
 
 class _profileState extends State<profile> {
+  Future<File> urlToFile(String imageUrl) async {
+    final String tempPath = (await getTemporaryDirectory()).path;
+    final File file = File('$tempPath${Random().nextInt(100)}.png');
+    http.Response response = await http.get(Uri.parse(imageUrl));
+    await file.writeAsBytes(response.bodyBytes);
+    return file;
+  }
+
+  String imageUrl =
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2a-tFaH8VM7HJuWjoSXSLaU-09yX_M2mkEVvwuKPn8nD7Dx5iv-Tai59PwCVdubS3V3lrarzJifdd_jOIuwAICE7aDYo1MxGc6MmJIp9xSpcbC11w12avBA6nCBm6DdGtR7Gn3fz94rTUkhWgdlHlzp8xZMgU1Z8EIb5vhb9qRMWOFOyEKSb9rQs7yGgq/s992/bluebird_fired.png';
   final Image ProfileImage = Image(
+      width: 2000,
+      height: 2000,
       image: NetworkImage(
-          'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLuW2xcJlrbLdQDiw-wTCsElgoQIvbaXRZ40pCZX9vxYuLh1W3njnzZ_SZddy3nVpXeTDZqdKX6rI-MQBECmDwL80RPHDA4d5_lBe89Z8YTbBw9LSlnkTYFbKFmLvObN6tMyyCx7kPVQiMVILHoqH-ze4DDH1n6tf6PIo06l_6w95xdmZ40m7X7Bzx9g/s664/rennai_kaeruka.png'));
+          'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2a-tFaH8VM7HJuWjoSXSLaU-09yX_M2mkEVvwuKPn8nD7Dx5iv-Tai59PwCVdubS3V3lrarzJifdd_jOIuwAICE7aDYo1MxGc6MmJIp9xSpcbC11w12avBA6nCBm6DdGtR7Gn3fz94rTUkhWgdlHlzp8xZMgU1Z8EIb5vhb9qRMWOFOyEKSb9rQs7yGgq/s992/bluebird_fired.png'));
+
+  File? image;
+  final picker = ImagePicker();
+  Future getImage() async {
+    final XFile? _image = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (_image != null) {
+        image = File(_image.path);
+      } else {
+        print('No Image Selected.');
+      }
+    });
+  }
+
   var myHomePage = MyHomePage(0);
   String profile_name = 'test_name';
   Widget build(BuildContext context) {
@@ -63,14 +94,27 @@ class _profileState extends State<profile> {
                 children: [
                   InkWell(
                     child: Container(
-                      width: 150,
-                      height: 150,
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLuW2xcJlrbLdQDiw-wTCsElgoQIvbaXRZ40pCZX9vxYuLh1W3njnzZ_SZddy3nVpXeTDZqdKX6rI-MQBECmDwL80RPHDA4d5_lBe89Z8YTbBw9LSlnkTYFbKFmLvObN6tMyyCx7kPVQiMVILHoqH-ze4DDH1n6tf6PIo06l_6w95xdmZ40m7X7Bzx9g/s664/rennai_kaeruka.png'),
-                        radius: 10,
-                      ),
-                    ),
+                        width: 200,
+                        height: 200,
+                        child: /*CircleAvatar(
+                        child: ClipOval(
+                          child: image == Null
+                              ? Text('No Image Selected.')
+                              : Image.file(image!),
+                        ),
+                        radius: 25,
+                      ),*/
+                            image == null
+                                ? Text('画像がありません')
+                                : CircleAvatar(
+                                    child: ClipOval(
+                                        child: Container(
+                                            width: 200,
+                                            height: 200,
+                                            child: Image.file(image!,
+                                                fit: BoxFit.cover))),
+                                    backgroundColor: Colors.blue,
+                                    radius: 25)),
                     onTap: () {
                       showModalBottomSheet(
                           backgroundColor: Colors.transparent,
@@ -111,7 +155,9 @@ class _profileState extends State<profile> {
                                           width: double.infinity,
                                           height: 60,
                                           child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                getImage();
+                                              },
                                               child: Text('端末から選択',
                                                   style:
                                                       TextStyle(fontSize: 20)),
