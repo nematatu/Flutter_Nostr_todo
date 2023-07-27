@@ -65,8 +65,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final controller = TextEditingController();
   var _screen;
-  late String appBar_title;
-  Icon icon = Icon(Icons.thumb_up);
 
   // ページ下部に並べるナビゲーションメニューの一覧
   List<BottomNavigationBarItem> myBottomNavBarItems = [
@@ -93,9 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[900],
-      // Appbar
-
-      // ページビュー
       body: wid[_screen],
       // ページ下部のナビゲーションメニュー
       bottomNavigationBar: BottomNavigationBar(
