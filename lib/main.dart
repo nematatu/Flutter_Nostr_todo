@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'timeline.dart';
-import 'CakeScreen.dart';
-import 'record.dart';
+import 'menu.dart';
+import 'todo_list.dart';
 import 'profile.dart';
 
 void main() => runApp(MyApp());
@@ -61,7 +61,6 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-// SingleTickerProviderStateMixinを使用。後述
 class _MyHomePageState extends State<MyHomePage> {
   final controller = TextEditingController();
   var _screen;
@@ -69,16 +68,16 @@ class _MyHomePageState extends State<MyHomePage> {
   // ページ下部に並べるナビゲーションメニューの一覧
   List<BottomNavigationBarItem> myBottomNavBarItems = [
     const BottomNavigationBarItem(
-      icon: Icon(Icons.home),
+      icon: Icon(Icons.home_outlined),
       label: 'home',
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.sports_mma),
-      label: 'Record',
+      icon: Icon(Icons.widgets_outlined),
+      label: 'menu',
     ),
     const BottomNavigationBarItem(
-      icon: Icon(Icons.cake),
-      label: 'Cake',
+      icon: Icon(Icons.show_chart),
+      label: 'report',
     ),
   ];
 
@@ -108,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Widget> wid = [timeline(), record_widget(), CakeScreen(), profile()];
+  List<Widget> wid = [timeline(), menu(), report(), profile()];
   Widget widget_view(int index) {
     return wid[index];
   }

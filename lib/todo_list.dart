@@ -6,20 +6,16 @@ import 'todo_management/todo_list_store.dart';
 import 'todo_management/todo.dart';
 import 'profile.dart';
 
-class record_widget extends StatefulWidget {
+class menu extends StatefulWidget {
   final TODO? todo;
-  record_widget([this.todo]);
+  menu([this.todo]);
   @override
-  State<record_widget> createState() {
-    return _record_widgetState();
-  }
-
-  static dynamic toto() {
-    return print('test');
+  State<menu> createState() {
+    return _todo_listState();
   }
 }
 
-class _record_widgetState extends State<record_widget> {
+class _todo_listState extends State<menu> {
   final controller = TextEditingController();
   final _score = TodoListStore();
   late String _title;
@@ -49,7 +45,7 @@ class _record_widgetState extends State<record_widget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("record"),
+        title: Text("menu"),
         actions: [
           IconButton(
             onPressed: () {
@@ -115,6 +111,7 @@ class _record_widgetState extends State<record_widget> {
                                       controller.clear();
                                       Navigator.of(context).pop();
                                       _done = false;
+                                      setState(() {});
                                     },
                                     child: Text('保存'),
                                   ),

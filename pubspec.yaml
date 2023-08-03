@@ -40,6 +40,8 @@ dependencies:
   intl: ^0.18.1
   image_picker: ^1.0.1
   path_provider: ^2.0.15
+  web_socket_channel: ^2.4.0
+  nostr: ^1.4.0
 
 dev_dependencies:
   flutter_test:

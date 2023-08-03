@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'profile.dart';
 
-class CakeScreen extends StatelessWidget {
+class report extends StatelessWidget {
   var myHomePage = MyHomePage(0);
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,10 @@ class CakeScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.pink,
         appBar: AppBar(
-          title: Text("timeline"),
+          title: Text("report"),
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.add_outlined)),
+          ],
         ),
         drawer: myHomePage.drawer_func(func, func2),
         body: Center(
