@@ -41,6 +41,9 @@ dependencies:
   path_provider: ^2.0.15
   web_socket_channel: ^2.4.0
   nostr: ^1.4.0
+  modal_bottom_sheet: ^3.0.0-pre
+  flutter_datetime_picker_plus: ^2.0.1
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_test:

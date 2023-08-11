@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'package:ui_design/todo_list.dart';
+import 'package:ui_design/menu.dart';
 import 'package:ui_design/todo_management/todo_list_store.dart';
 import 'todo_management/todo.dart';
 import 'profile.dart';
@@ -33,6 +33,7 @@ class _timelineState extends State<timeline> {
     channel.stream.listen((payload) {
       try {
         final _msg = Message.deserialize(payload);
+        //print(payload);
         if (_msg.type == 'EVENT') {
           setState(() {
             _list.add({
@@ -89,6 +90,15 @@ class _timelineState extends State<timeline> {
   }
 
   Widget messageWidget(List<Map<String, dynamic>> messages, index) {
+    Future func() {
+      return Navigator.push(
+          context, MaterialPageRoute(builder: (context) => profile()));
+    }
+
+    void func2() {
+      return Navigator.pop(context);
+    }
+
     return SingleChildScrollView(
         child: Container(
             decoration: const BoxDecoration(
@@ -115,7 +125,7 @@ class _timelineState extends State<timeline> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('にょーん',
+                        Text('User Name',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                         Text(messages[index]["content"],
@@ -148,6 +158,7 @@ class _timelineState extends State<timeline> {
                 Tab(icon: Icon(Icons.person)),
                 Tab(icon: Icon(Icons.search)),
               ])),
+          drawer: myHomePage.drawer_func(func, func2),
           body: TabBarView(
             children: [
               Center(

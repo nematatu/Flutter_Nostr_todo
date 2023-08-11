@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'todo.dart';
 
@@ -18,6 +17,15 @@ class TodoListStore {
 
   TODO findByIndex(int index) {
     return _list[index];
+  }
+
+  List<TODO> find() {
+    return _list;
+  }
+
+  void deleteall() async {
+    _list.clear();
+    save();
   }
 
   void add(bool done, String title, String detail) {

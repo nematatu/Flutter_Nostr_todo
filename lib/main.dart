@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'timeline.dart';
+import 'report.dart';
 import 'menu.dart';
-import 'todo_list.dart';
 import 'profile.dart';
+import 'todo_management/todo_list_store.dart';
+import 'menu.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  TodoListStore();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'BottomNav',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: MyHomePage(0),
     );
@@ -84,6 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     this._screen = widget._screen;
+    setState(() {
+      TodoListStore().load();
+    });
+    setState(() {
+      calendarStore().load();
+    });
   }
 
   @override

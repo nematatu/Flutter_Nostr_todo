@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class profile extends StatefulWidget {
   State<profile> createState() => _profileState();
@@ -19,6 +21,8 @@ class _profileState extends State<profile> {
     return file;
   }
 
+  final String _saveKey = 'profile_image';
+
   String imageUrl =
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2a-tFaH8VM7HJuWjoSXSLaU-09yX_M2mkEVvwuKPn8nD7Dx5iv-Tai59PwCVdubS3V3lrarzJifdd_jOIuwAICE7aDYo1MxGc6MmJIp9xSpcbC11w12avBA6nCBm6DdGtR7Gn3fz94rTUkhWgdlHlzp8xZMgU1Z8EIb5vhb9qRMWOFOyEKSb9rQs7yGgq/s992/bluebird_fired.png';
   final Image ProfileImage = Image(
@@ -30,14 +34,32 @@ class _profileState extends State<profile> {
   File? image;
   final picker = ImagePicker();
   Future getImage() async {
-    final XFile? _image = await picker.pickImage(source: ImageSource.gallery);
+    XFile? _image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (_image != null) {
-        image = File(_image.path);
+        save(_image);
+        load();
       } else {
         print('No Image Selected.');
       }
     });
+  }
+
+  void save(XFile _image) async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(_saveKey, _image.path);
+  }
+
+  void load() async {
+    var prefs = await SharedPreferences.getInstance();
+    setState(() {
+      image = File(prefs.getString(_saveKey) ?? "");
+    });
+  }
+
+  void initState() {
+    super.initState();
+    load();
   }
 
   var myHomePage = MyHomePage(0);
@@ -48,8 +70,9 @@ class _profileState extends State<profile> {
           context, MaterialPageRoute(builder: (context) => profile()));
     }
 
-    void func2() {
-      return Navigator.pop(context);
+    Future func2() {
+      return Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyHomePage(0)));
     }
 
     return Scaffold(
@@ -105,7 +128,9 @@ class _profileState extends State<profile> {
                         radius: 25,
                       ),*/
                             image == null
-                                ? Text('画像がありません')
+                                ? Container(
+                                    color: Colors.grey,
+                                  )
                                 : CircleAvatar(
                                     child: ClipOval(
                                         child: Container(
@@ -157,6 +182,7 @@ class _profileState extends State<profile> {
                                           child: ElevatedButton(
                                               onPressed: () {
                                                 getImage();
+                                                setState(() {});
                                               },
                                               child: Text('端末から選択',
                                                   style:
